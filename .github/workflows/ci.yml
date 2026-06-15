@@ -72,7 +72,7 @@ jobs:
       - name: Build (github_pages preset)
         env:
           # GitHub Pages project sites are served from /<repo>/
-          NUXT_APP_BASE_URL: /distkit-docs/
+          # NUXT_APP_BASE_URL: /distkit-docs/
           NUXT_PUBLIC_GTAG_ID: ${{ secrets.NUXT_PUBLIC_GTAG_ID }}
         run: pnpm exec nuxt build --preset github_pages
 
