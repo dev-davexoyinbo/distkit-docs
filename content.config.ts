@@ -18,7 +18,9 @@ export default defineContentConfig({
           icon: z.string(),
           to: z.string(),
           target: z.string().optional()
-        })).optional()
+        })).optional(),
+        date: z.string().optional(),
+        badge: z.string().optional()
       })
     })
   }

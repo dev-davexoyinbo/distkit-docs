@@ -1,7 +1,7 @@
 ---
 seo:
-  title: Nuxt Docs Template
-  description: Create stunning, fast and SEO-optimized documentation sites with Nuxt UI.
+  title: distkit - Distributed systems primitives for Rust
+  description: distkit is a Rust toolkit of distributed systems primitives backed by Redis - strict and lax counters, instance-aware counters, distributed locks, and rate limiting.
 ---
 
 ::u-page-hero{class="dark:bg-gradient-to-b from-neutral-900 to-neutral-950"}
@@ -12,10 +12,10 @@ orientation: horizontal
 :hero-background
 
 #title
-Ship Beautiful [Documentation]{.text-primary}.
+Distributed primitives for Rust, [backed by Redis]{.text-primary}.
 
 #description
-Build professional documentation with Nuxt UI's powerful components, enhanced typography, and seamless Nuxt Content integration. The same system trusted by the entire [Nuxt ecosystem](https://nuxt.com).
+distkit gives you the building blocks distributed services keep reinventing - counters, instance-aware counters, locks, and rate limiting - behind small, async APIs that mirror the `std` and `tokio` types you already know. `#![forbid(unsafe_code)]`, no panics in library code.
 
 #links
   :::u-button
@@ -29,215 +29,168 @@ Build professional documentation with Nuxt UI's powerful components, enhanced ty
 
   :::u-button
   ---
-  icon: i-simple-icons-github
-  color: neutral
-  variant: outline
-  size: xl
-  to: https://github.com/nuxt-ui-templates/docs
+  to: https://github.com/dev-davexoyinbo/distkit
   target: _blank
+  variant: ghost
+  color: neutral
+  size: xl
+  icon: i-simple-icons-github
   ---
-  Use this template
+  GitHub
+  :::
+
+  :::u-button
+  ---
+  to: https://crates.io/crates/distkit
+  target: _blank
+  variant: ghost
+  color: neutral
+  size: xl
+  trailing-icon: i-lucide-external-link
+  ---
+  crates.io
   :::
 
 #default
+  ::u-card{class="divide-y divide-neutral-200/60 dark:divide-neutral-800/60"}
   :::prose-pre
   ---
+  filename: Cargo.toml
   code: |
-    export default defineNuxtConfig({
-      modules: [
-        '@nuxt/ui',
-        '@nuxt/content',
-        'nuxt-og-image',
-        'nuxt-llms'
-      ],
-
-      css: ['~/assets/css/main.css']
-    })
-  filename: nuxt.config.ts
+    [dependencies]
+    distkit = "0.5"
   ---
-
-  ```ts [nuxt.config.ts]
-  export default defineNuxtConfig({
-    modules: [
-      '@nuxt/ui',
-      '@nuxt/content',
-      'nuxt-og-image',
-      'nuxt-llms'
-    ],
-
-    css: ['~/assets/css/main.css']
-  })
+  ```toml [Cargo.toml]
+  [dependencies]
+  distkit = "0.5"
   ```
   :::
+
+  :::prose-pre
+  ---
+  filename: main.rs
+  code: |
+    use distkit::{DistkitRedisKey, counter::{StrictCounter, CounterOptions, CounterTrait}};
+
+    let conn = redis::Client::open("redis://127.0.0.1/")?
+        .get_connection_manager().await?;
+    let prefix = DistkitRedisKey::try_from("my_app".to_string())?;
+
+    let counter = StrictCounter::new(CounterOptions::new(prefix, conn));
+    let key = DistkitRedisKey::try_from("page_views".to_string())?;
+    counter.inc(&key, 1).await?;
+  ---
+  ```rust [main.rs]
+  use distkit::{DistkitRedisKey, counter::{StrictCounter, CounterOptions, CounterTrait}};
+
+  let conn = redis::Client::open("redis://127.0.0.1/")?
+      .get_connection_manager().await?;
+  let prefix = DistkitRedisKey::try_from("my_app".to_string())?;
+
+  let counter = StrictCounter::new(CounterOptions::new(prefix, conn));
+  let key = DistkitRedisKey::try_from("page_views".to_string())?;
+  counter.inc(&key, 1).await?;
+  ```
+  :::
+  ::
 ::
 
-::u-page-section{class="dark:bg-neutral-950"}
+::u-page-section
 #title
-Powered by Nuxt UI components
+One toolkit, four primitives
 
-#links
-  :::u-button
-  ---
-  color: neutral
-  size: lg
-  target: _blank
-  to: https://ui.nuxt.com/docs/getting-started/installation/nuxt
-  trailingIcon: i-lucide-arrow-right
-  variant: subtle
-  ---
-  Explore Nuxt UI
-  :::
+#description
+Each primitive is its own opt-in feature. Pull in only what you use - the core counters ship by default.
 
 #features
   :::u-page-feature
   ---
-  icon: i-lucide-palette
+  icon: i-lucide-hash
+  to: /counters
   ---
   #title
-  100+ UI Components
-
+  Counters
   #description
-  Access the complete Nuxt UI component library. From badges to modals, everything styled and accessible out of the box.
+  Strict counters are atomic per call; lax counters buffer in memory and flush on an interval for sub-microsecond writes. Conditional and batch operations on both.
   :::
 
   :::u-page-feature
   ---
-  icon: i-lucide-type
+  icon: i-lucide-network
+  to: /instance-aware-counters
   ---
   #title
-  Beautiful Typography
-
+  Instance-aware counters
   #description
-  Pre-styled prose components with perfect visual harmony. No need for @tailwindcss/typography - get precise control over every element.
+  Each instance owns a slice of the total. The cumulative is the sum of live instances, and dead instances are cleaned up automatically via heartbeats.
   :::
 
   :::u-page-feature
   ---
-  icon: i-lucide-layers
+  icon: i-lucide-lock
+  to: /locks
   ---
   #title
-  Rich Prose Components
-
+  Distributed locks
   #description
-  Accordions, cards, callouts, tabs, steps, code blocks, and more - all provided by Nuxt UI for interactive documentation.
+  Redis-backed `Mutex` and writer-preferring `RwLock` that mirror `tokio::sync`. RAII guards, background lease renewal, and an awaitable `release()`.
   :::
 
   :::u-page-feature
   ---
-  icon: i-lucide-search
+  icon: i-lucide-gauge
+  to: /rate-limiting
   ---
   #title
-  Built-in Search
-
+  Rate limiting
   #description
-  Full-text search with ContentSearch component. No need for Algolia - instant, relevant results with keyboard shortcuts (⌘K).
-  :::
-
-  :::u-page-feature
-  ---
-  icon: i-lucide-navigation
-  ---
-  #title
-  Smart Navigation
-
-  #description
-  Auto-generated navigation with ContentNavigation and ContentToc components. Sticky table of contents and prev/next links.
-  :::
-
-  :::u-page-feature
-  ---
-  icon: i-lucide-moon
-  ---
-  #title
-  Dark Mode Ready
-
-  #description
-  Automatic theme switching with smooth transitions. Respects system preferences and remembers user choice.
+  Sliding-window rate limiting via the trypema crate, re-exported under `distkit::trypema` with local, Redis, and hybrid providers.
   :::
 ::
 
 ::u-page-section{class="dark:bg-neutral-950"}
 #title
-Enhanced with Nuxt Content
-
-#links
-  :::u-button
-  ---
-  color: neutral
-  size: lg
-  target: _blank
-  to: https://content.nuxt.com/docs/getting-started/installation
-  trailingIcon: i-lucide-arrow-right
-  variant: subtle
-  ---
-  Explore Nuxt Content
-  :::
+Built to be predictable
 
 #features
   :::u-page-feature
   ---
-  icon: i-simple-icons-markdown
+  icon: i-lucide-shield-check
   ---
   #title
-  MDC Enhanced Markdown
-
+  Safe by default
   #description
-  Write in Markdown while embedding Vue components. Seamlessly integrate interactive elements in your content.
+  `#![forbid(unsafe_code)]` and no panics in library code. Errors surface through one `DistkitError` enum.
   :::
 
   :::u-page-feature
   ---
-  icon: i-lucide-file-text
+  icon: i-lucide-scale
   ---
   #title
-  File-based Routing
-
+  Strict or lax, your call
   #description
-  Organize content in folders and files. Your documentation structure automatically becomes your navigation.
+  Choose immediate consistency when accuracy is critical, or buffered writes when throughput matters. Same trait, different guarantees.
   :::
 
   :::u-page-feature
   ---
-  icon: i-lucide-code
+  icon: i-lucide-zap
   ---
   #title
-  Syntax Highlighting
-
+  Atomic where it counts
   #description
-  Beautiful code blocks with language detection, line numbers, and copy buttons. Support for 100+ languages.
+  Strict operations execute Lua scripts so a single Redis round-trip is atomic - no read-modify-write races across instances.
   :::
 
   :::u-page-feature
   ---
-  icon: i-lucide-database
+  icon: i-lucide-recycle
   ---
   #title
-  Content Database
-
+  Self-cleaning background tasks
   #description
-  Query your content with a MongoDB-like API. Filter, sort, and search through your documentation programmatically.
-  :::
-
-  :::u-page-feature
-  ---
-  icon: i-lucide-file-code
-  ---
-  #title
-  Frontmatter Support
-
-  #description
-  Add metadata to your content files. Define SEO tags, navigation properties, and custom fields.
-  :::
-
-  :::u-page-feature
-  ---
-  icon: i-lucide-git-branch
-  ---
-  #title
-  Version Control
-
-  #description
-  Content lives in your repository. Branch, review, and deploy documentation alongside your code.
+  Flush and lease-renewal tasks hold `Weak` references and stop on their own when the owning value is dropped.
   :::
 ::
 
@@ -245,16 +198,16 @@ Enhanced with Nuxt Content
   :::u-page-c-t-a
   ---
   links:
-    - label: Start building
+    - label: Get started
       to: '/getting-started'
       trailingIcon: i-lucide-arrow-right
     - label: View on GitHub
-      to: 'https://github.com/nuxt-ui-templates/docs'
+      to: 'https://github.com/dev-davexoyinbo/distkit'
       target: _blank
       variant: subtle
       icon: i-simple-icons-github
-  title: Ready to build an amazing documentation?
-  description: Join thousands of developers building with Nuxt and Nuxt UI. Get this template and start shipping today.
+  title: Ready to add distkit?
+  description: Install the crate, point it at Redis, and reach for the primitive you need.
   class: dark:bg-neutral-950
   ---
 

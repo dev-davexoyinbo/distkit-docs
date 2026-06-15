@@ -1,8 +1,8 @@
 export default defineAppConfig({
   ui: {
     colors: {
-      primary: 'green',
-      neutral: 'slate'
+      primary: 'orange',
+      neutral: 'neutral'
     },
     footer: {
       slots: {
@@ -12,59 +12,67 @@ export default defineAppConfig({
     }
   },
   seo: {
-    siteName: 'Nuxt Docs Template'
+    siteName: 'distkit'
   },
   header: {
-    title: '',
+    title: 'distkit',
     to: '/',
     logo: {
-      alt: '',
-      light: '',
-      dark: ''
+      alt: 'distkit',
+      light: '/distkit-logo.webp',
+      dark: '/distkit-logo-light.webp'
     },
     search: true,
     colorMode: true,
     links: [{
+      'icon': 'i-lucide-scroll',
+      'to': '/changelog',
+      'aria-label': 'Changelog'
+    }, {
       'icon': 'i-simple-icons-github',
-      'to': 'https://github.com/nuxt-ui-templates/docs',
+      'to': 'https://github.com/dev-davexoyinbo/distkit',
       'target': '_blank',
       'aria-label': 'GitHub'
+    }, {
+      'icon': 'i-simple-icons-rust',
+      'to': 'https://docs.rs/distkit',
+      'target': '_blank',
+      'aria-label': 'docs.rs'
+    }, {
+      'icon': 'i-lucide-package',
+      'to': 'https://crates.io/crates/distkit',
+      'target': '_blank',
+      'aria-label': 'crates.io'
     }]
   },
   footer: {
-    credits: `Built with Nuxt UI • © ${new Date().getFullYear()}`,
+    credits: `distkit • © ${new Date().getFullYear()}`,
     colorMode: false,
     links: [{
-      'icon': 'i-simple-icons-discord',
-      'to': 'https://go.nuxt.com/discord',
-      'target': '_blank',
-      'aria-label': 'Nuxt on Discord'
-    }, {
-      'icon': 'i-simple-icons-x',
-      'to': 'https://go.nuxt.com/x',
-      'target': '_blank',
-      'aria-label': 'Nuxt on X'
+      'icon': 'i-lucide-scroll',
+      'to': '/changelog',
+      'aria-label': 'Changelog'
     }, {
       'icon': 'i-simple-icons-github',
-      'to': 'https://github.com/nuxt/ui',
+      'to': 'https://github.com/dev-davexoyinbo/distkit',
       'target': '_blank',
-      'aria-label': 'Nuxt UI on GitHub'
+      'aria-label': 'GitHub'
     }]
   },
   toc: {
     title: 'Table of Contents',
     bottom: {
-      title: 'Community',
-      edit: 'https://github.com/nuxt-ui-templates/docs/edit/main/content',
+      title: 'Links',
+      edit: 'https://github.com/dev-davexoyinbo/distkit-docs/edit/main/content',
       links: [{
         icon: 'i-lucide-star',
         label: 'Star on GitHub',
-        to: 'https://github.com/nuxt/ui',
+        to: 'https://github.com/dev-davexoyinbo/distkit',
         target: '_blank'
       }, {
         icon: 'i-lucide-book-open',
-        label: 'Nuxt UI docs',
-        to: 'https://ui.nuxt.com/docs/getting-started/installation/nuxt',
+        label: 'API docs (docs.rs)',
+        to: 'https://docs.rs/distkit',
         target: '_blank'
       }]
     }
