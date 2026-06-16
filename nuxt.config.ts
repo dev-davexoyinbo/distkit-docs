@@ -46,6 +46,8 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/content',
     'nuxt-og-image',
+    '@nuxtjs/sitemap',
+    '@nuxtjs/robots',
     'nuxt-llms',
     '@nuxtjs/mcp-toolkit',
     'nuxt-gtag'
@@ -60,6 +62,13 @@ export default defineNuxtConfig({
   },
 
   css: ['~/assets/css/main.css'],
+
+  // Shared site metadata, consumed by sitemap, robots, og-image, and SEO.
+  site: {
+    url: 'https://distkit.davidoyinbo.com',
+    name: 'distkit',
+    description: 'distkit is a Rust toolkit of distributed systems primitives backed by Redis: distributed counters, instance-aware counters, locks, and rate limiting.'
+  },
 
   content: {
     build: {
@@ -145,7 +154,7 @@ export default defineNuxtConfig({
   },
 
   llms: {
-    domain: 'https://dev-davexoyinbo.github.io/distkit-docs/',
+    domain: 'https://distkit.davidoyinbo.com',
     title: 'distkit',
     description: 'distkit is a Rust toolkit of distributed systems primitives backed by Redis: counters, instance-aware counters, locks, and rate limiting.',
     full: {
@@ -211,5 +220,22 @@ export default defineNuxtConfig({
 
   ogImage: {
     zeroRuntime: true
+  },
+
+  robots: {
+    // Allow everything; keep crawlers out of the raw markdown exports.
+    disallow: ['/raw/'],
+    // robots.txt advertises the sitemap automatically via `site.url`.
+    sitemap: '/sitemap.xml'
+  },
+
+  sitemap: {
+    // The raw markdown exports are not real pages.
+    exclude: ['/raw/**'],
+    // Sensible defaults for a docs site that changes per release.
+    defaults: {
+      changefreq: 'weekly',
+      priority: 0.7
+    }
   }
 })

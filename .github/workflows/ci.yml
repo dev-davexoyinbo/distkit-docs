@@ -45,8 +45,9 @@ jobs:
 
       - name: Build
         env:
+          # Served from the root of the custom domain (see public/CNAME).
           NUXT_PUBLIC_GTAG_ID: ${{ secrets.NUXT_PUBLIC_GTAG_ID }}
-        run: NUXT_APP_BASE_URL=/distkit-docs/ pnpm run build --preset github_pages
+        run: pnpm run build --preset github_pages
 
   build_pages:
     name: Build GitHub Pages

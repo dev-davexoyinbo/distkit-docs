@@ -4,8 +4,11 @@ if (!page.value) {
   throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
 }
 
+const site = useSiteConfig()
+
 const title = page.value.seo?.title || page.value.title
 const description = page.value.seo?.description || page.value.description
+const ogImage = `${site.url}/og-image.png`
 
 useSeoMeta({
   titleTemplate: '',
@@ -13,7 +16,10 @@ useSeoMeta({
   ogTitle: title,
   description,
   ogDescription: description,
-  ogImage: 'https://ui.nuxt.com/assets/templates/nuxt/docs-light.png'
+  ogImage,
+  twitterTitle: title,
+  twitterDescription: description,
+  twitterImage: ogImage
 })
 </script>
 
