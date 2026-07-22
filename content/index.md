@@ -58,11 +58,11 @@ distkit gives you the building blocks distributed services keep reinventing - co
   filename: Cargo.toml
   code: |
     [dependencies]
-    distkit = "0.5"
+    distkit = "0.6"
   ---
   ```toml [Cargo.toml]
   [dependencies]
-  distkit = "0.5"
+  distkit = "0.6"
   ```
   :::
 
@@ -93,6 +93,10 @@ distkit gives you the building blocks distributed services keep reinventing - co
   ```
   :::
   ::
+::
+
+::u-container{class="py-10"}
+![Distkit connecting counters, locks, and rate limits through one Redis-backed toolkit](/media/distkit/banner.webp){.w-full .rounded-2xl .border .border-neutral-800}
 ::
 
 ::u-page-section
