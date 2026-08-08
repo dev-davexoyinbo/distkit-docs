@@ -58,11 +58,11 @@ distkit gives you the building blocks distributed services keep reinventing - co
   filename: Cargo.toml
   code: |
     [dependencies]
-    distkit = "0.6"
+    distkit = "0.7"
   ---
   ```toml [Cargo.toml]
   [dependencies]
-  distkit = "0.6"
+  distkit = "0.7"
   ```
   :::
 
